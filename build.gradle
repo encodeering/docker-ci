@@ -11,10 +11,12 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 repositories {
+     maven { url "https://repo.jenkins-ci.org/public" }
      maven { url "http://repo.maven.apache.org/maven2" }
 }
 
 dependencies {
+    compile group: 'org.jenkins-ci.plugins', name: 'job-dsl', version:'1.47'
     compile group: 'org.codehaus.groovy', name: 'groovy-all', version:'2.4.1'
     testCompile group: 'org.spockframework',  name: 'spock-core', version:'1.0-groovy-2.4'
 }

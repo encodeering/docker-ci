@@ -25,6 +25,12 @@ def define (project, services) {
 
     job             (project) {
         description (project)
+
+        publishers {
+            joinTrigger {
+                downstream (services.collect (servicename))
+            }
+        }
     }
 
     services.each {service ->

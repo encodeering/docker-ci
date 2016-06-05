@@ -39,4 +39,18 @@ class InfrastructureSpec extends Specification implements Job {
             }
     }
 
+    def 'creates a trigger for the service job' () {
+        given:
+            def script = load ('infrastructure.groovy')
+            def jobs   = management ()
+
+        when:
+            script (jobs)
+
+        then:
+            verify (jobs.savedConfigs.get ('docker-debian')) {
+                assert it.publishers.'hudson.tasks.BuildTrigger'.childProjects.text () == 'docker-debian-travis'
+            }
+    }
+
 }

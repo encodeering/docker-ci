@@ -40,6 +40,7 @@ class InfrastructureSpec extends Specification implements Job {
             verify (jobs.savedConfigs.get ('docker-debian-travis')) {
                 assert it.description.text () == 'docker-debian-travis'
                 assert it.assignedNode.text () == 'docker'
+                assert it.properties.EnvInjectJobProperty.info.propertiesContent.text () == 'arch=amd64\naccount=encodeering\nbranch=master\nproject=docker-debian'
             }
     }
 

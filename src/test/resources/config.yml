@@ -1,4 +1,7 @@
 ---
+arch: amd64
+account: encodeering
+branch: master
 label: docker
 tree:
   docker-debian:

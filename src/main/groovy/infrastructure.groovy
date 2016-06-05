@@ -12,6 +12,10 @@ import org.yaml.snakeyaml.Yaml
 tree  = config.tree
 label = config.label
 
+arch    = config.arch
+account = config.account
+branch  = config.branch
+
 def traverse (map, builder) {
               map.collect {name, Map config ->
                   builder (name,     config.getOrDefault ('service',    []),
@@ -41,6 +45,8 @@ def define (project, services, downstreams) {
             description (servicename (service))
 
             label (label)
+
+            environmentVariables (arch: arch, account: account, branch: branch, project: project)
         }
     }
 }

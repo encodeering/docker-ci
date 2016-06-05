@@ -26,6 +26,12 @@ trait Job {
         return { JobManagement management -> new DslScriptLoader (management).runScripts ([request]) }
     }
 
-    def JobManagement management () { new MemoryJobManagement () }
+    def JobManagement management () {
+        MemoryJobManagement management = new MemoryJobManagement ()
+                            management.availableFiles << [
+                                'config.yml' : new File ('src/test/resources/config.yml').text
+                            ]
+        management
+    }
 
 }

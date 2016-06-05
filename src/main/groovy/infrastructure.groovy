@@ -8,16 +8,8 @@ import org.yaml.snakeyaml.Yaml
  * @version $Id: $Id
  */
 
-tree = """
----
-docker-debian:
-  service: [travis]
-  downstream:
-    - docker-php:
-        service: [travis, semaphore]
-    - docker-postgres:
-        service: [travis]
-"""
+        config = new Yaml ().load (readFileFromWorkspace ('config.yml'))
+tree  = config.tree
 
 def traverse (map, builder) {
               map.collect {name, Map config ->
@@ -48,4 +40,4 @@ def define (project, services, downstreams) {
     }
 }
 
-traverse (new Yaml ().load (tree) as Map, this.&define)
+traverse (tree as Map, this.&define)

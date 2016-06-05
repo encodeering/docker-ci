@@ -1,0 +1,9 @@
+---
+tree:
+  docker-debian:
+    service: [travis]
+    downstream:
+      - docker-php:
+          service: [travis, semaphore]
+      - docker-postgres:
+          service: [semaphore]

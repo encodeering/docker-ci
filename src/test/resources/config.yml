@@ -1,4 +1,5 @@
 ---
+label: docker
 tree:
   docker-debian:
     service: [travis]

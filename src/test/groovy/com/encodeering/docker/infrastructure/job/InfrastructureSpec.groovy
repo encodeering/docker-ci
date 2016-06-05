@@ -24,6 +24,7 @@ class InfrastructureSpec extends Specification implements Job {
         then:
             verify (jobs.savedConfigs.get ('docker-debian')) {
                 assert it.description.text () == 'docker-debian'
+                assert it.assignedNode.text () == 'docker'
             }
     }
 
@@ -38,6 +39,7 @@ class InfrastructureSpec extends Specification implements Job {
         then:
             verify (jobs.savedConfigs.get ('docker-debian-travis')) {
                 assert it.description.text () == 'docker-debian-travis'
+                assert it.assignedNode.text () == 'docker'
             }
     }
 

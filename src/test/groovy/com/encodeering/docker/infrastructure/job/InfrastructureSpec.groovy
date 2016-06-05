@@ -87,4 +87,33 @@ class InfrastructureSpec extends Specification implements Job {
             'docker-postgres' | ''
     }
 
+    @Unroll
+    def "creates specific views for #name" (name, regex) {
+        given:
+            def script = load ('infrastructure.groovy')
+            def jobs   = management ()
+
+        when:
+            script (jobs)
+
+        then:
+            verify (jobs.savedViews.get (name)) {
+                assert it.includeRegex.text () == regex
+
+                assert ! it.columns.'hudson.views.StatusColumn'.isEmpty ()
+                assert ! it.columns.'hudson.views.WeatherColumn'.isEmpty ()
+                assert ! it.columns.'hudson.views.BuildButtonColumn'.isEmpty ()
+                assert ! it.columns.'hudson.views.JobColumn'.isEmpty ()
+                assert ! it.columns.'hudson.views.LastSuccessColumn'.isEmpty ()
+                assert ! it.columns.'hudson.views.LastFailureColumn'.isEmpty ()
+                assert ! it.columns.'hudson.views.LastDurationColumn'.isEmpty ()
+            }
+
+        where:
+            name               | regex
+            'docker'           | '^docker-((?!travis|semaphore).)+$'
+            'docker-travis'    | '^docker-(.+)-travis$'
+            'docker-semaphore' | '^docker-(.+)-semaphore$'
+    }
+
 }

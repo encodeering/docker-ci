@@ -61,4 +61,26 @@ def define (project, services, downstreams) {
     }
 }
 
+[
+    'docker'           : '^docker-((?!travis|semaphore).)+$',
+    'docker-travis'    : '^docker-(.+)-travis$',
+    'docker-semaphore' : '^docker-(.+)-semaphore$'
+].forEach { project, predicate ->
+
+    listView (project) {
+        jobs {
+            regex (predicate)
+        }
+        columns {
+            status ()
+            weather ()
+            buildButton ()
+            name ()
+            lastSuccess ()
+            lastFailure ()
+            lastDuration ()
+        }
+    }
+}
+
 traverse (tree as Map, this.&define)

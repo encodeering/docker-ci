@@ -47,6 +47,12 @@ def define (project, services, downstreams) {
             label (label)
 
             environmentVariables (arch: arch, account: account, branch: branch, project: project)
+
+            wrappers {
+                credentialsBinding {
+                    string ("token", "${service}-token")
+                }
+            }
         }
     }
 }

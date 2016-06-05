@@ -41,6 +41,12 @@ class InfrastructureSpec extends Specification implements Job {
                 assert it.description.text () == 'docker-debian-travis'
                 assert it.assignedNode.text () == 'docker'
                 assert it.properties.EnvInjectJobProperty.info.propertiesContent.text () == 'arch=amd64\naccount=encodeering\nbranch=master\nproject=docker-debian'
+
+                def binding = it.buildWrappers.'org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper'.bindings
+                                              .'org.jenkinsci.plugins.credentialsbinding.impl.StringBinding'
+
+                assert binding.variable.text () == 'token'
+                assert binding.credentialsId.text () == 'travis-token'
             }
     }
 

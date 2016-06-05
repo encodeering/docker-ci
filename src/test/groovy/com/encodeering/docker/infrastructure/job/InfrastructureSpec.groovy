@@ -28,28 +28,37 @@ class InfrastructureSpec extends Specification implements Job {
             }
     }
 
-    def 'creates a descriptive service job' () {
+    @Unroll
+    def "creates a descriptive service job named #name-#service" (name, service) {
         given:
             def script = load ('infrastructure.groovy')
             def jobs   = management ()
+            def servicename = "$name-$service".toString ()
 
         when:
             script (jobs)
 
         then:
-            verify (jobs.savedConfigs.get ('docker-debian-travis')) {
-                assert it.description.text () == 'docker-debian-travis'
+            verify (jobs.savedConfigs.get (servicename)) {
+                assert it.description.text () == servicename
                 assert it.assignedNode.text () == 'docker'
-                assert it.properties.EnvInjectJobProperty.info.propertiesContent.text () == 'arch=amd64\naccount=encodeering\nbranch=master\nproject=docker-debian'
+                assert it.properties.EnvInjectJobProperty.info.propertiesContent.text () == "arch=amd64\naccount=encodeering\nbranch=master\nproject=$name"
 
                 def binding = it.buildWrappers.'org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper'.bindings
                                               .'org.jenkinsci.plugins.credentialsbinding.impl.StringBinding'
 
                 assert binding.variable.text () == 'token'
-                assert binding.credentialsId.text () == 'travis-token'
+                assert binding.credentialsId.text () == "$service-token"
 
-                assert it.builders.'hudson.tasks.Shell'.command.text () == 'echo "travis"\n'
+                assert it.builders.'hudson.tasks.Shell'.command.text () == """echo "$service"\n"""
             }
+
+        where:
+            name              | service
+            'docker-debian'   | 'travis'
+            'docker-php'      | 'travis'
+            'docker-php'      | 'semaphore'
+            'docker-postgres' | 'semaphore'
     }
 
     @Unroll

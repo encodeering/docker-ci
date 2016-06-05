@@ -25,4 +25,18 @@ class InfrastructureSpec extends Specification implements Job {
             }
     }
 
+    def 'creates a descriptive service job' () {
+        given:
+            def script = load ('infrastructure.groovy')
+            def jobs   = management ()
+
+        when:
+            script (jobs)
+
+        then:
+            verify (jobs.savedConfigs.get ('docker-debian-travis')) {
+                assert it.description.text () == 'docker-debian-travis'
+            }
+    }
+
 }

@@ -11,17 +11,26 @@ import org.yaml.snakeyaml.Yaml
 tree = """
 ---
 docker-debian:
+  service: [travis]
 """
 
 def traverse (map, builder) {
               map.collect {name, Map config ->
-                  builder (name)
+                  builder (name,     config.getOrDefault ('service',    []))
               }
 }
 
-def define (project) {
+def define (project, services) {
+    def servicename = { "${project}-${it}" }
+
     job             (project) {
         description (project)
+    }
+
+    services.each {service ->
+        job (            servicename (service)) {
+            description (servicename (service))
+        }
     }
 }
 

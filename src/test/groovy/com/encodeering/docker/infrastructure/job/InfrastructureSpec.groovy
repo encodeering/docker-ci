@@ -2,6 +2,8 @@ package com.encodeering.docker.infrastructure.job
 
 import com.encodeering.docker.infrastructure.Job
 import spock.lang.Specification
+import spock.lang.Unroll
+
 /**
  * Date: 05.06.2016
  * Time: 11:40
@@ -51,6 +53,27 @@ class InfrastructureSpec extends Specification implements Job {
             verify (jobs.savedConfigs.get ('docker-debian')) {
                 assert it.publishers.'hudson.tasks.BuildTrigger'.childProjects.text () == 'docker-debian-travis'
             }
+    }
+
+    @Unroll
+    def "creates a reference for downstream builds of #name" (name, trigger) {
+        given:
+            def script = load ('infrastructure.groovy')
+            def jobs   = management ()
+
+        when:
+            script (jobs)
+
+        then:
+            verify (jobs.savedConfigs.get (name)) {
+                assert it.publishers.'join.JoinTrigger'.joinProjects.text () == trigger
+            }
+
+        where:
+            name              | trigger
+            'docker-debian'   | 'docker-php, docker-postgres'
+            'docker-php'      | ''
+            'docker-postgres' | ''
     }
 
 }

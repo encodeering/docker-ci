@@ -12,15 +12,22 @@ tree = """
 ---
 docker-debian:
   service: [travis]
+  downstream:
+    - docker-php:
+        service: [travis, semaphore]
+    - docker-postgres:
+        service: [travis]
 """
 
 def traverse (map, builder) {
               map.collect {name, Map config ->
-                  builder (name,     config.getOrDefault ('service',    []))
+                  builder (name,     config.getOrDefault ('service',    []),
+                                     config.getOrDefault ('downstream', []).collect {next -> traverse (next as Map, builder)}.flatten ())
+                  name
               }
 }
 
-def define (project, services) {
+def define (project, services, downstreams) {
     def servicename = { "${project}-${it}" }
 
     job             (project) {
@@ -29,6 +36,7 @@ def define (project, services) {
         publishers {
             joinTrigger {
                 downstream (services.collect (servicename))
+                projects   (* downstreams)
             }
         }
     }

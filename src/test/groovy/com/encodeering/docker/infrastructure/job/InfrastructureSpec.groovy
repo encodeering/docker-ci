@@ -52,7 +52,8 @@ class InfrastructureSpec extends Specification implements Job {
             }
     }
 
-    def 'creates a trigger for the service job' () {
+    @Unroll
+    def "creates a trigger for the service job of #name" (name, trigger) {
         given:
             def script = load ('infrastructure.groovy')
             def jobs   = management ()
@@ -61,9 +62,15 @@ class InfrastructureSpec extends Specification implements Job {
             script (jobs)
 
         then:
-            verify (jobs.savedConfigs.get ('docker-debian')) {
-                assert it.publishers.'hudson.tasks.BuildTrigger'.childProjects.text () == 'docker-debian-travis'
+            verify (jobs.savedConfigs.get (name)) {
+                assert it.publishers.'hudson.tasks.BuildTrigger'.childProjects.text () == trigger
             }
+
+        where:
+            name              | trigger
+            'docker-debian'   | 'docker-debian-travis'
+            'docker-php'      | 'docker-php-travis, docker-php-semaphore'
+            'docker-postgres' | 'docker-postgres-semaphore'
     }
 
     @Unroll

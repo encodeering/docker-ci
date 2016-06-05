@@ -13,7 +13,8 @@ import spock.lang.Unroll
  */
 class InfrastructureSpec extends Specification implements Job {
 
-    def 'creates a descriptive job' () {
+    @Unroll
+    def "creates a descriptive job named #name" (name) {
         given:
             def script = load ('infrastructure.groovy')
             def jobs   = management ()
@@ -22,10 +23,17 @@ class InfrastructureSpec extends Specification implements Job {
             script (jobs)
 
         then:
-            verify (jobs.savedConfigs.get ('docker-debian')) {
-                assert it.description.text () == 'docker-debian'
+            verify (jobs.savedConfigs.get (name)) {
+                assert it.description.text () == name
                 assert it.assignedNode.text () == 'docker'
             }
+
+        where:
+            name << [
+                'docker-debian',
+                'docker-php',
+                'docker-postgres'
+            ]
     }
 
     @Unroll

@@ -1,3 +1,5 @@
+import org.yaml.snakeyaml.Yaml
+
 /**
  * Date: 05.06.2016
  * Time: 11:44
@@ -6,7 +8,10 @@
  * @version $Id: $Id
  */
 
-tree = ['docker-debian':[:]];
+tree = """
+---
+docker-debian:
+"""
 
 def traverse (map, builder) {
               map.collect {name, Map config ->
@@ -20,4 +25,4 @@ def define (project) {
     }
 }
 
-traverse (tree, this.&define)
+traverse (new Yaml ().load (tree) as Map, this.&define)

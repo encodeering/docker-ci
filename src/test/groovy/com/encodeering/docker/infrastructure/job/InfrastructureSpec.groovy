@@ -47,6 +47,8 @@ class InfrastructureSpec extends Specification implements Job {
 
                 assert binding.variable.text () == 'token'
                 assert binding.credentialsId.text () == 'travis-token'
+
+                assert it.builders.'hudson.tasks.Shell'.command.text () == 'echo "travis"\n'
             }
     }
 

@@ -53,6 +53,10 @@ def define (project, services, downstreams) {
                     string ("token", "${service}-token")
                 }
             }
+
+            steps {
+                shell (readFileFromWorkspace ("service/${service}.sh"))
+            }
         }
     }
 }

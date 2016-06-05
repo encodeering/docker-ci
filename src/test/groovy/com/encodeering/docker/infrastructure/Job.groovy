@@ -29,7 +29,9 @@ trait Job {
     def JobManagement management () {
         MemoryJobManagement management = new MemoryJobManagement ()
                             management.availableFiles << [
-                                'config.yml' : new File ('src/test/resources/config.yml').text
+                                'config.yml' : new File ('src/test/resources/config.yml').text,
+                                'service/travis.sh'    : new File ('src/test/resources/service/travis.sh').text,
+                                'service/semaphore.sh' : new File ('src/test/resources/service/semaphore.sh').text
                             ]
         management
     }

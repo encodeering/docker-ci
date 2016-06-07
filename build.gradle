@@ -1,6 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'groovy'
 apply plugin: 'idea'
+apply plugin: 'distribution'
 
 group = 'com.encodeering'
 version = '0.1.0-SNAPSHOT'
@@ -20,4 +21,13 @@ dependencies {
     compile group: 'org.jenkins-ci.plugins', name: 'job-dsl', version:'1.47'
     compile group: 'org.codehaus.groovy', name: 'groovy-all', version:'2.4.1'
     testCompile group: 'org.spockframework',  name: 'spock-core', version:'1.0-groovy-2.4'
+}
+
+distributions {
+    main {
+        contents {
+            from ('src/main/groovy') { into "job" }
+            from ('src/main/resources')
+        }
+    }
 }

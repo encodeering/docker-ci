@@ -26,6 +26,7 @@ dependencies {
 distributions {
     main {
         contents {
+            from (configurations.compile.filter { it.name.startsWith 'snakeyaml' }) { into "lib" }
             from ('src/main/groovy') { into "job" }
             from ('src/main/resources')
         }

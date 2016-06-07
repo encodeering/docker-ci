@@ -1,0 +1,6 @@
+subprojects {
+
+    group = 'com.encodeering'
+    version = '0.1.0-SNAPSHOT'
+
+}

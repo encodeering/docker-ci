@@ -3,9 +3,6 @@ apply plugin: 'groovy'
 apply plugin: 'idea'
 apply plugin: 'distribution'
 
-group = 'com.encodeering'
-version = '0.1.0-SNAPSHOT'
-
 description = """"""
 
 sourceCompatibility = 1.8

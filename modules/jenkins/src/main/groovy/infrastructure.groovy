@@ -36,6 +36,8 @@ def define (project, services, downstreams) {
             joinTrigger {
                 downstream (services.collect (servicename))
                 projects   (* downstreams)
+
+                evenIfDownstreamUnstable (false)
             }
         }
     }

@@ -102,6 +102,7 @@ class InfrastructureSpec extends Specification implements Job {
         then:
             verify (jobs.savedConfigs.get (name)) {
                 assert it.publishers.'join.JoinTrigger'.joinProjects.text () == trigger
+                assert it.publishers.'join.JoinTrigger'.evenIfDownstreamUnstable.text () == "false"
             }
 
         where:

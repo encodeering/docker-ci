@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# configuration
+#   env.ARCH
+#   env.BRANCH
+#   env.MODULE
+#   env.PROJECT
+#   env.REPOSITORY
+
+set -e
+
+finalname () {
+    local repository="${REPOSITORY}"
+    local name="`dashcase "${PROJECT}" "${ARCH}"`";
+    local version="`dashcase ${VERSION} "${BRANCH##master}"`"
+
+    echo "${repository}/${name}:${version}"
+}
+
+DOCKER_IMAGE="`finalname`"
+
+import config.all
+import config.$ARCH

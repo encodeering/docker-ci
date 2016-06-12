@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+set -e
+
+log () {
+    echo "$@"
+}
+
+die () {
+    log "$1"
+    exit 1
+}
+
+fail () {
+    log "$1"
+    return 1;
+}
+
+retry () {
+    count="$1";    shift
+    function="$1"; shift
+
+    if [ "${count}" -le 0 ]; then
+        fail "retry limit exceeded"
+    else
+        "${function}" "$@" || retry "`expr ${count} - 1`" "${function}" "$@"
+    fi
+}
+
+dashcase () {
+    local result=""
+
+    for           value; do
+        [ ! -z "${value:+x}" ] && { result+="${value}-"; }
+    done
+
+    [ "${#result}" -le 0 ] && { echo ""; } \
+                           || { echo "${result:0:-1}"; }
+}

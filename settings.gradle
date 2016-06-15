@@ -1,2 +1,3 @@
 rootProject.name = 'docker-ci'
+include 'modules:ci'
 include 'modules:jenkins'

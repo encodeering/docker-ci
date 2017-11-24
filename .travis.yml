@@ -1,0 +1,19 @@
+language: java
+
+sudo: required
+
+script:
+- ./gradlew clean build
+
+deploy:
+  provider: releases
+  file:
+    - modules/ci/build/distributions/*
+    - modules/jenkins/build/distributions/*
+  file_glob: true
+  skip_cleanup: true
+  api_key:
+    secure: dapI+vaGaZmyjl8AfBMD1CKTshtr1wqjoRsUfDk+Iu6legnBfYUhlC/mMVf61nZoAexXyeV+joQxRxWVcQkIKzyA9lpy+oD2/pXkZrIiQDe6s0xrRjdDdtPv0y0qkENx5zjK2x0lOfnIqX6L5sF0nDi6DrqmyCqjWiNjW5bNwEJO8FdA+PBU0Ui/rdBegdQ71d3iLcxeubYv0wlfdB4njuKoqwbggGPIN6XUOwB92bxZ/J1F4lWPyoo6v75TVfB1mUcQZYUyXfI7Q3oN7s49qI8oYHX32F77dfIZkDIFGKEj48JviJKb/o2vyT4oSXIfXhQ1TgayjTVa1uijA1cYdagn/U8TotUm49CA4Gcuk662rWz2y0AWUWb100DlCrFfZdQDgRcPhApFj5zuG4mGIU0DRnkgUQKzWo4Y49wMKXuTrJDuljUrqYfIEv9SBzNJsprSBavsxrLG8JrX3vJC6CQUR+H+lK1Bcl5Re8cpsl8ecijHj8HBnhWlZ9w/bn9KUcGdpkBdfk1MBHiDAKYfESG3ApJ0xO29jpyRve8GDHsGETqeBX89VPTLRsaLOtJ3dbuOORLiH+CiK3DZoPmlLRgqs3+SaSc/tNaPYIOKwuEfO0MGdVVG5uMXreUHUJrHXVwaF2sKwOV+zb44LPWGF5h/pOBCDpqAnWl3/pCnPmo=
+  on:
+    tags: true
+    repo: encodeering/docker-ci

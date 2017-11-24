@@ -1,1 +1,11 @@
+apply plugin: 'distribution'
+
 description = """"""
+
+distributions {
+    main {
+        contents {
+            from ('src')
+        }
+    }
+}

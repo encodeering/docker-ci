@@ -21,8 +21,9 @@ emulate () {
         armhf )
             local ARM=':arm:M::\x7fELF\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x28\x00:\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff:/usr/bin/qemu-arm-static:'
 
-            cat             /proc/sys/fs/binfmt_misc/status
+            echo -1       > /proc/sys/fs/binfmt_misc/arm || true
             echo "${ARM}" > /proc/sys/fs/binfmt_misc/register
+            cat             /proc/sys/fs/binfmt_misc/arm
             ;;
     esac
 }

@@ -32,19 +32,23 @@ traverse () {
 }
 
 import () {
+    local target="$1"; shift
+
     set -o allexport
 
-    traverse "lib/source" "source" "$1" source
-    traverse "."          "source" "$1" source
+    traverse "lib/source" "source" "${target}" source
+    traverse "."          "source" "${target}" source
 
     set +o allexport
 }
 
 script () {
+    local target="$1"; shift
+
     set -o allexport
 
-    traverse "lib/script" "sh" "$1" bash "$@"
-    traverse "."          "sh" "$1" bash "$@"
+    traverse "lib/script" "sh" "${target}" bash "$@"
+    traverse "."          "sh" "${target}" bash "$@"
 
     set +o allexport
 }

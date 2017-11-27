@@ -11,7 +11,7 @@ set -e
 import com.encodeering.docker.lang
 import com.encodeering.docker.config
 
-finalname () {
+docker-image () {
     local repository="${REPOSITORY}"
     local name="`dashcase "${PROJECT}" "${ARCH}"`";
     local version="`dashcase ${VERSION} "${BRANCH##master}"`"
@@ -19,4 +19,9 @@ finalname () {
     echo "${repository}/${name}:${version}"
 }
 
-DOCKER_IMAGE="`finalname`"
+docker-pull () {
+                   docker pull "$1"
+    [ -z "$2" ] || docker tag  "$1" "$2"
+}
+
+DOCKER_IMAGE="`docker-image`"

@@ -1,0 +1,25 @@
+/**
+ *http://ryanharter.com/blog/2013/07/30/automatic-versioning-with-git-and-gradle/
+ **/
+ext.versioncode = { String defver = '0.0.0' ->
+    try {
+        def stdout = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'describe', '--tags'
+            standardOutput = stdout
+            errorOutput = new ByteArrayOutputStream()
+        }
+
+        def    fields = stdout.toString ().trim ().tokenize ("-") + ["", ""]
+
+        return fields[0] +
+              (fields[1] ? "-" : "") +
+               fields[1] +
+               fields[2].collect {
+                  def    v = (int) it - (int) 'a'
+                  return v < 0 ? '0' + it : '1' + v
+              }.join ("")
+    } catch (e) {
+        return defver
+    }
+}

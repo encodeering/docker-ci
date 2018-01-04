@@ -9,23 +9,23 @@ set -e
 export ROOT="$PWD"
 
 traverse () {
-    SUBDIRECTORY="$1"; shift
-    EXTENSION="$1"; shift
-    TARGET="$1"; shift
-    FUNCTION="$1"; shift
+    local subdirectory="$1"; shift
+    local extension="$1"; shift
+    local target="$1"; shift
+    local function="$1"; shift
 
-    BASE=`pwd -P`
-    PARENT="."
+    local base=`pwd -P`
+    local parent="."
 
     while
-        FILE="${BASE}/${0%/*}/${PARENT}/${SUBDIRECTORY}/${TARGET//.//}.${EXTENSION}"
-        FILE=`readlink -m "${FILE}"`
+        local file="${base}/${0%/*}/${parent}/${subdirectory}/${target//.//}.${extension}"
+              file=`readlink -m "${file}"`
 
-        [[ ${FILE} == ${ROOT}* ]] || break
+        [[ ${file} == ${ROOT}* ]] || break
 
-        [ -f "${FILE}" ] && "${FUNCTION}" "${FILE}" "$@"
+        [ -f "${file}" ] && "${function}" "${file}" "$@"
 
-        PARENT="../${PARENT}"
+        parent="../${parent}"
     do
         :
     done

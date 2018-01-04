@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # configuration
 #   env.ARCH
+#   env.BASE
 #   env.BRANCH
 #   env.VARIANT
 #   env.MODULE
@@ -15,7 +16,7 @@ import com.encodeering.docker.config
 docker-image () {
     local repository="${REPOSITORY}"
     local name="`dashcase "${PROJECT}" "${ARCH}"`";
-    local version="`dashcase ${VERSION} ${VARIANT} "${BRANCH##master}"`"
+    local version="`dashcase ${VERSION} ${BASE} ${VARIANT} "${BRANCH##master}"`"
 
     echo "${repository}/${name}:${version}"
 }

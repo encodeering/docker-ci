@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 # author: Michael Clausen <encodeering@gmail.com>
-# configuration
-#   env.ARCH
 
 set -e
 

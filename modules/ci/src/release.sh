@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 # author: Michael Clausen <encodeering@gmail.com>
-# configuration
-#   env.DOCKER_USERNAME
-#   env.DOCKER_PASSWORD
 
 set -e
 

@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 # author: Michael Clausen <encodeering@gmail.com>
-# configuration
-#   $1 module directory, can be "."
-#   $2 script
 
 set -e
 

@@ -1,12 +1,4 @@
 #!/usr/bin/env bash
-# configuration
-#   env.ARCH
-#   env.BASE
-#   env.BRANCH
-#   env.VARIANT
-#   env.MODULE
-#   env.PROJECT
-#   env.REPOSITORY
 
 set -e
 

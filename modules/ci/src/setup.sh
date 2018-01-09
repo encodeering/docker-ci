@@ -6,5 +6,5 @@ set -e
 import com.encodeering.docker.lang
 import com.encodeering.docker.config
 
-                  { script "com.encodeering.docker.binfmt" -a "${ARCH}"; }
-[ "$#" -ge 2 ] && { script "com.encodeering.docker.scm" -s "$1" -d "$2" -c "$3"; } || { true; }
+                          { script "com.encodeering.docker.binfmt" -a "${ARCH}"; }
+[ -z "${SCM_SOURCE}" ] || { script "com.encodeering.docker.scm" -s "${SCM_SOURCE}" -d "${SCM_TARGET}" -c "${SCM_COMMIT}"; }

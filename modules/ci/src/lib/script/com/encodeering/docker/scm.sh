@@ -30,8 +30,15 @@ checkout () {
     mkdir -p "${directory}"
     cd       "${directory}"
 
-    git clone "${source}" .
-    git checkout "${commit}"
+    case "${source}" in
+        http*github.com*)
+            wget -O - "${source%.git}/archive/${commit}.tar.gz" | tar xzf - --strip-components=1
+            ;;
+        *)
+            git clone "${source}" .
+            git checkout "${commit}"
+            ;;
+    esac
 }
 
 checkout "${source}" "${commit}" "${directory}"

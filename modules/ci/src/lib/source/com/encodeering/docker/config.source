@@ -4,3 +4,10 @@ set -e
 
 import config.all
 import config.$ARCH
+import config.$BASE
+import config.$BASE-$VERSION
+import config.$BASE-$VERSION-$ARCH
+import config.$VARIANT
+import config.$VARIANT-$BASE
+import config.$VARIANT-$BASE-$VERSION
+import config.$VARIANT-$BASE-$VERSION-$ARCH

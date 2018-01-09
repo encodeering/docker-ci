@@ -20,7 +20,7 @@ traverse () {
 
         [[ ${file} == ${ROOT}* ]] || break
 
-        [ -f "${file}" ] && "${function}" "${file}" "$@"
+        [ -f "${file}" ] && { echo "${function} ${file}"; "${function}" "${file}" "$@"; }
 
         parent="../${parent}"
     do

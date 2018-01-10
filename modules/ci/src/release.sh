@@ -5,17 +5,10 @@ set -e
 
 import com.encodeering.docker.docker
 
-pushif () {
-    if          docker inspect "$1" > /dev/null 2>&1; then
-        retry 2 docker push    "$1"
-    fi
-}
-
-retry 2 docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
-
-pushif "${DOCKER_IMAGE}"
+docker-login
+docker-push "${DOCKER_IMAGE}"
 
 for TAG in "$@"
 do
-    [ -z "$TAG" ] || pushif "${DOCKER_IMAGE}-${TAG}"
+    [ -z "$TAG" ] || docker-push "${DOCKER_IMAGE}-${TAG}"
 done

@@ -18,4 +18,14 @@ docker-pull () {
     [ -z "$2" ] || docker tag  "$1" "$2"
 }
 
+docker-push () {
+    if          docker inspect "$1" > /dev/null 2>&1; then
+        retry 2 docker push    "$1"
+    fi
+}
+
+docker-login () {
+    retry 2 docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
+}
+
 DOCKER_IMAGE="`docker-image`"

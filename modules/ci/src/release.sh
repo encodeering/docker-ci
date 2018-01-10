@@ -6,9 +6,9 @@ set -e
 import com.encodeering.docker.docker
 
 docker-login
-docker-push "${DOCKER_IMAGE}"
+docker-push
 
 for TAG in "$@"
 do
-    [ -z "$TAG" ] || docker-push "${DOCKER_IMAGE}-${TAG}"
+    [ -z "$TAG" ] || docker-push --suffix "${TAG}"
 done

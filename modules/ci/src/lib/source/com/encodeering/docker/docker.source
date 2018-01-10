@@ -5,12 +5,36 @@ set -e
 import com.encodeering.docker.lang
 import com.encodeering.docker.config
 
-docker-image () {
+--docker-name-and-args () {
+    case "$1" in
+        --suffix)
+            local suffix="$2"; shift; shift;
+            ;;
+        *)
+            local suffix=""
+            ;;
+    esac
+
     local repository="${REPOSITORY}"
     local name="`dashcase "${PROJECT}" "${ARCH}"`";
-    local version="`dashcase ${VERSION} ${BASE} ${VARIANT} "${BRANCH##master}"`"
+    local version="`dashcase ${VERSION} ${BASE} ${VARIANT} ${suffix} "${BRANCH##master}"`"
 
-    echo "${repository}/${name}:${version}"
+    echo "${repository}/${name}:${version}" "$@"
+}
+
+docker-build () {
+    docker build -t `--docker-name-and-args "$@"`
+}
+
+docker-verify () {
+    docker run $DOCKER_VERIFY_CONFIG --rm `--docker-name-and-args "$@"`; local status=$?
+    unset       DOCKER_VERIFY_CONFIG
+
+    return ${status}
+}
+
+docker-verify-config () {
+    DOCKER_VERIFY_CONFIG="$1"
 }
 
 docker-pull () {
@@ -19,8 +43,10 @@ docker-pull () {
 }
 
 docker-push () {
-    if          docker inspect "$1" > /dev/null 2>&1; then
-        retry 2 docker push    "$1"
+    local args=`--docker-name-and-args "$@"`
+
+    if          docker inspect ${args} > /dev/null 2>&1; then
+        retry 2 docker push    ${args}
     fi
 }
 
@@ -28,4 +54,4 @@ docker-login () {
     retry 2 docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
 }
 
-DOCKER_IMAGE="`docker-image`"
+docker-verify-config ""

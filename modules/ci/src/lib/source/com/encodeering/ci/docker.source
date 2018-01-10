@@ -2,8 +2,8 @@
 
 set -e
 
-import com.encodeering.docker.lang
-import com.encodeering.docker.config
+import com.encodeering.ci.lang
+import com.encodeering.ci.config
 
 --docker-name-and-args () {
     case "$1" in

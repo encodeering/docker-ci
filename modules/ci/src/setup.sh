@@ -3,8 +3,8 @@
 
 set -e
 
-import com.encodeering.docker.lang
-import com.encodeering.docker.config
+import com.encodeering.ci.lang
+import com.encodeering.ci.config
 
-                          { script "com.encodeering.docker.binfmt" -a "${ARCH}"; }
-[ -z "${SCM_SOURCE}" ] || { script "com.encodeering.docker.scm" -s "${SCM_SOURCE}" -d "${SCM_TARGET}" -c "${SCM_COMMIT}"; }
+                          { script "com.encodeering.ci.binfmt" -a "${ARCH}"; }
+[ -z "${SCM_SOURCE}" ] || { script "com.encodeering.ci.scm" -s "${SCM_SOURCE}" -d "${SCM_TARGET}" -c "${SCM_COMMIT}"; }

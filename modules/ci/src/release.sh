@@ -3,7 +3,7 @@
 
 set -e
 
-import com.encodeering.docker.docker
+import com.encodeering.ci.docker
 
 docker-login
 docker-push

@@ -23,7 +23,7 @@ import com.encodeering.docker.config
 }
 
 docker-build () {
-    docker build -t `--docker-name-and-args "$@"`
+    retry 2 docker build -t `--docker-name-and-args "$@"`
 }
 
 docker-verify () {

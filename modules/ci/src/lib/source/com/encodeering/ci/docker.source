@@ -22,6 +22,33 @@ import com.encodeering.ci.config
     echo "${repository}/${name}:${version}" "$@"
 }
 
+docker-patch () {
+    local base="$1"; shift
+    local directory="$1"; shift
+    local lookup=(
+        "$VARIANT/$BASE/$VERSION/$ARCH"
+        "$VARIANT/$BASE/$VERSION"
+        "$VARIANT/$BASE"
+        "$VARIANT"
+        "."
+    )
+
+    exclude=
+
+    for file in "${lookup[@]}"; do
+        local   file=`sed -e 's/^\///' <<< ${file}`
+        [ -z "${file}" ] && continue
+
+        [ "$file" == "." ] && local maxdepth=1
+
+        local   target=`readlink -f "${base}/${file}"`
+        [ -d "${target}" ] && find "${target}" ${maxdepth+-maxdepth ${maxdepth}} -path "${exclude}" -prune -o -iname "*.patch" -exec bash -c \
+            "echo found patch \$0; patch -p1 --directory="${directory}" -r- --no-backup-if-mismatch < \$0" {} \;
+
+        exclude="${target}"
+    done
+}
+
 docker-build () {
     retry 2 docker build -t `--docker-name-and-args "$@"`
 }

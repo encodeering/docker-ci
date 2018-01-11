@@ -2,6 +2,11 @@
 
 set -e
 
+BRANCH="unknown"
+
+[ -z "${TRAVIS+x}"    ] || BRANCH="$TRAVIS_BRANCH"
+[ -z "${SEMAPHORE+x}" ] || BRANCH="$BRANCH_NAME"
+
 import config.all
 import config.$ARCH
 import config.$BASE

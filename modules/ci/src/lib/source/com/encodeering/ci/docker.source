@@ -50,8 +50,8 @@ docker-patch () {
     targets=(`echo "${targets[@]}" | tr ' ' '\n' | sort -ru`)
 
     for         target in "${targets[@]}"; do
-        find "${target}" -maxdepth 1 -iname "*.patch" -exec bash -c \
-            "echo found patch \$0; patch -p1 --directory="${directory}" -r- --no-backup-if-mismatch < \$0" {} \;
+        find "${target}" -maxdepth 1 -iname "*.patch" -print0 | xargs --no-run-if-empty -0 -n1 bash -c \
+            "echo found patch \$0; patch -p1 --directory="${directory}" -r- --no-backup-if-mismatch < \$0"
     done
 }
 

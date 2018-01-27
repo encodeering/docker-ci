@@ -5,6 +5,9 @@ sudo: required
 script:
 - ./gradlew clean build
 
+after_script:
+- tar -tvf modules/ci/build/distributions/*.tar
+
 deploy:
   provider: releases
   file:

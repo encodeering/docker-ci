@@ -71,8 +71,14 @@ docker-verify-config () {
 }
 
 docker-pull () {
-                   docker pull "$1"
-    [ -z "$2" ] || docker tag  "$1" "$2"
+    local          image="$1"; shift
+
+    docker pull "${image}"
+
+    for tag in "$@"
+    do
+        [ -z "${tag}" ] || docker tag "${image}" "${tag}"
+    done
 }
 
 docker-push () {

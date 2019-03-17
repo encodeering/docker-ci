@@ -93,4 +93,8 @@ docker-login () {
     retry 2 docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
 }
 
+docker-scan () {
+    [ `docker images -q -f 'dangling=false' | sort -u | xargs docker inspect --format "{{ .RepoTags }}" | dup | grep -cv "$1"` -eq 0 ] || die "host contains invalid images"
+}
+
 docker-verify-config ""

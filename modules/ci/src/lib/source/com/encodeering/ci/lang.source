@@ -37,3 +37,15 @@ dashcase () {
     [ "${#result}" -le 0 ] && { echo ""; } \
                            || { echo "${result:0:-1}"; }
 }
+
+dup () {
+    tee /dev/tty
+}
+
+contains () {
+    grep -q "$1" || die "failed to match $1"
+}
+
+matches () {
+    grep -qE "$1" || die "failed to match $1"
+}

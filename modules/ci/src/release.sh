@@ -5,6 +5,8 @@ set -e
 
 import com.encodeering.ci.docker
 
+docker-scan "${REPOSITORY}"
+
 docker-login
 docker-push
 

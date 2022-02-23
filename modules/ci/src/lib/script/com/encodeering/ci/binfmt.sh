@@ -21,6 +21,8 @@ emulate () {
 
     case "${architecture}" in
         armhf)
+            mount -t binfmt_misc none /proc/sys/fs/binfmt_misc
+
             local ARM=':arm:M::\x7fELF\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x28\x00:\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff:/usr/bin/qemu-arm-static:'
 
             echo -1       > /proc/sys/fs/binfmt_misc/arm || true

@@ -2,34 +2,12 @@
 
 set -e
 
-while getopts "a:" opt; do
-	case "${opt}" in
-		a)
-			architecture="${OPTARG}"
-			;;
-		*)
-      echo "usage: $0 -a [armhf,..]"
-      exit 1
-			;;
-	esac
-done
-
 emulate () {
-    local architecture="$1";
+    mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc
 
-    [    "${architecture}" == `dpkg --print-architecture` ] && exit 0
+    find /proc/sys/fs/binfmt_misc -type f -name 'qemu-*' -exec sh -c 'echo -1 > {}' \;
 
-    case "${architecture}" in
-        armhf)
-            mount -t binfmt_misc none /proc/sys/fs/binfmt_misc
-
-            local ARM=':arm:M::\x7fELF\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x28\x00:\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff:/usr/bin/qemu-arm-static:'
-
-            echo -1       > /proc/sys/fs/binfmt_misc/arm || true
-            echo "${ARM}" > /proc/sys/fs/binfmt_misc/register
-            cat             /proc/sys/fs/binfmt_misc/arm
-            ;;
-    esac
+    binfmt-qemu.sh --qemu-suffix '-static' --qemu-path /usr/bin -p yes
 }
 
-emulate "${architecture}"
+emulate

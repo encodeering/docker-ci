@@ -12,12 +12,12 @@ while getopts "s:c:d:" opt; do
 		c)
 			commit="${OPTARG}"
 			;;
-        d)
+    d)
 			directory="${OPTARG}"
 			;;
 		*)
-            echo "usage: $0 -s https://github.com/.. -c xxx-sha-xxx -d directory"
-            exit 1
+      echo "usage: $0 -s https://github.com/.. -c xxx-sha-xxx -d directory"
+      exit 1
 			;;
 	esac
 done

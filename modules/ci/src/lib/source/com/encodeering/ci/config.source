@@ -2,10 +2,7 @@
 
 set -e
 
-BRANCH="unknown"
-
-[ -z "${TRAVIS+x}"    ] || BRANCH="$TRAVIS_BRANCH"
-[ -z "${SEMAPHORE+x}" ] || BRANCH="$BRANCH_NAME"
+BRANCH="$(git name-rev --name-only HEAD | sed 's/[^[:alnum:]]/-/g')"
 
 import config.all
 import config.$ARCH

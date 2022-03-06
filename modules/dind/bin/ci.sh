@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# https://stackoverflow.com/questions/37540717/flatten-nested-json-using-jq
+# https://stackoverflow.com/questions/48512914/exporting-json-to-environment-variables
 set -euo pipefail
 
 unpack () {
@@ -11,4 +13,14 @@ unpack () {
     cat < "${package}" | tar xvf - -C "${target}" --strip-components=1
 }
 
-unpack "${1}" "${2:-.}"
+environmenty () {
+    cat -                                                                                                      \
+        | jq '. as $in | reduce leaf_paths as $path ({}; . + { ($path | join ("_")): $in | getpath ($path) })' \
+        | jq -r 'keys[] as $k | "\($k | ascii_upcase)=\(.[$k])"'                                               \
+        | xargs
+}
+
+case "${1}" in
+  "unpack") unpack "${2}" "${3:-.}";;
+     "env") environmenty;;
+esac

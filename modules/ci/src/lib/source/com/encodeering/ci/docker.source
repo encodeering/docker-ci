@@ -17,7 +17,7 @@ import com.encodeering.ci.config
 
     local repository="${REPOSITORY}"
     local name="`dashcase "${PROJECT}" "${ARCH}"`";
-    local version="`dashcase ${VERSION} ${BASE} ${VARIANT} ${suffix} "${BRANCH##master}"`"
+    local version="`dashcase "${VERSION}" "${BASE##${PROJECT}}" "${VARIANT}" "${suffix}" "${BRANCH##master}"`"
 
     echo "${repository}/${name}:${version}" "$@"
 }

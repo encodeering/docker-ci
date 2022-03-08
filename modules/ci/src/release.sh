@@ -9,8 +9,3 @@ docker-scan "${REPOSITORY}"
 
 docker-login
 docker-push
-
-for TAG in "$@"
-do
-    [ -z "$TAG" ] || docker-push --suffix "${TAG}"
-done

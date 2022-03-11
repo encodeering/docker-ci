@@ -17,7 +17,7 @@ import com.encodeering.ci.config
 
     local repository="${REPOSITORY}"
     local name="`dashcase "${PROJECT}" "${ARCH}"`";
-    local version="`dashcase ${VERSION} ${BASE} ${VARIANT} ${suffix} "${BRANCH##master}"`"
+    local version="`dashcase "${VERSION}" "${BASE##${PROJECT}}" "${VARIANT}" "${suffix}" "${BRANCH##master}"`"
 
     echo "${repository}/${name}:${version}" "$@"
 }
@@ -82,11 +82,9 @@ docker-pull () {
 }
 
 docker-push () {
-    local args=`--docker-name-and-args "$@"`
-
-    if          docker inspect ${args} > /dev/null 2>&1; then
-        retry 2 docker push    ${args}
-    fi
+    docker images --filter "reference=`--docker-name-and-args`*" --format "{{ .Repository }}" \
+        | uniq \
+        | xargs --no-run-if-empty bash -c 'retry 2 docker push --all-tags ${1}' "push.sh"
 }
 
 docker-login () {

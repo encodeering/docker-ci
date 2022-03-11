@@ -30,7 +30,7 @@ RUN        curl -sSL "https://download.docker.com/linux/static/${DOCKER_CHANNEL}
  &&        mv /docker/* /bin/         \
  &&        chmod +x     /bin/docker*
 
-ARG        CI_VERSION=0.1.13
+ARG        CI_VERSION=0.1.14
 
 RUN        mkdir -p /usr/local/lib/ci/ \
  &&        curl -sSL "https://raw.githubusercontent.com/meAmidos/dcind/6efeeaa/docker-lib.sh"          --output /usr/local/bin/docker-dind    \

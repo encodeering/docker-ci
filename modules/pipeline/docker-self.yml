@@ -39,7 +39,8 @@ jobs:
         platforms:  ((.:matrix.platforms))
         pipeline:   ((.:pipeline))
       instance_vars:
-        project:    ((.:pipeline.project))
+        base:       ((.:pipeline.base))
+        variant:    ((.:pipeline.variant))
         version:    ((.:pipeline.version))
 
 resources:

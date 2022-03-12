@@ -2,21 +2,34 @@ jobs:
 - name: self
   plan:
   - in_parallel:
-    - get: ci
-      params:
-        depth: 1
+    - get: base
     - get: code
       params:
         depth: 1
   - load_var: matrix
     file: code/matrix.json
     format: json
+  - task: fetch
+    image: base
+    config:
+      platform: linux
+      inputs:
+      - name: code
+      outputs:
+      - name: code
+      run:
+        path: bash
+        args:
+        - -cx
+        - |
+          set -euo pipefail
+          wget https://raw.githubusercontent.com/encodeering/docker-ci/((.:matrix.concourse.dind))/modules/pipeline/docker.yml -O code/matrix.yml
   - across:
     - var: pipeline
       values: ((.:matrix.pipelines))
     do:
     - set_pipeline: ((pipeline))
-      file: ci/modules/pipeline/docker.yml
+      file: code/matrix.yml
       vars:
         git:
           uri:      ((git.uri))
@@ -30,10 +43,11 @@ jobs:
         version:    ((.:pipeline.version))
 
 resources:
-- name: ci
-  type: git
+- name: base
+  type: registry-image
   source:
-    uri: https://github.com/encodeering/docker-ci.git
+    repository: encodeering/alpine-amd64
+    tag: 3.15
 - name: code
   type: git
   source:

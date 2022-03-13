@@ -9,7 +9,10 @@ pipeline () {
     local location="${4}"
     local branch="${5}"
 
-    curl -sSL https://raw.githubusercontent.com/encodeering/docker-ci/master/modules/pipeline/docker-self.yml \
+    local                   version="master"
+    [ -f "matrix.json" ] && version=$(jq -r '.concourse .dind' < matrix.json)
+
+    curl -sSL "https://raw.githubusercontent.com/encodeering/docker-ci/${version}/modules/pipeline/docker-self.yml" \
         | fly -t "${team}" set-pipeline --pipeline     "${name}-self"                                         \
                                         --var pipeline="${name}"                                              \
                                         --var repository="${repository}"                                      \

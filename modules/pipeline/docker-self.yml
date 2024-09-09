@@ -49,6 +49,10 @@ resources:
   source:
     repository: encodeering/alpine-amd64
     tag: 3.15
+    registry_mirror:
+      host:     ((docker.mirror))
+      username: ((docker.username))
+      password: ((docker.password))
 - name: code
   type: git
   source:

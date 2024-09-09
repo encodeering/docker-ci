@@ -17,9 +17,10 @@ jobs:
       config:
         platform: linux
         params:
-          ARCH:     ((.:platform))
-          PIPELINE:   ((pipeline))
-          REPOSITORY: ((repository))
+          ARCH:            ((.:platform))
+          PIPELINE:        ((pipeline))
+          REPOSITORY:      ((repository))
+          DOCKER_MIRROR:   ((docker.mirror))
           DOCKER_USERNAME: ((docker.username))
           DOCKER_PASSWORD: ((docker.password))
         inputs:
@@ -49,3 +50,7 @@ resources:
   source:
     repository: encodeering/concourse-dind
     tag: ((concourse.dind))
+    registry_mirror:
+      host:     ((docker.mirror))
+      username: ((docker.username))
+      password: ((docker.password))

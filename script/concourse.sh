@@ -3,7 +3,7 @@
 set -euo pipefail
 
 pipeline () {
-    local team="${1}"
+    local target="${1}"
     local repository="${2}"
     local name="${3}"
     local location="${4}"
@@ -13,12 +13,12 @@ pipeline () {
     [ -f "matrix.json" ] && version=$(jq -r '.concourse .dind' < matrix.json)
 
     curl -sSL "https://raw.githubusercontent.com/encodeering/docker-ci/${version}/modules/pipeline/docker-self.yml" \
-        | fly -t "${team}" set-pipeline --pipeline     "${name}-self"                                         \
-                                        --var pipeline="${name}"                                              \
-                                        --var repository="${repository}"                                      \
-                                        --var git.uri="${location}"                                           \
-                                        --var git.branch="${branch}"                                          \
-                                        --config -
+        | fly -t "${target}" set-pipeline --pipeline     "${name}-self"                                             \
+                                          --var pipeline="${name}"                                                  \
+                                          --var repository="${repository}"                                          \
+                                          --var git.uri="${location}"                                               \
+                                          --var git.branch="${branch}"                                              \
+                                          --config -
 }
 
 case "${1}" in

@@ -9,7 +9,7 @@ pipeline () {
     local location="${4}"
     local branch="${5}"
 
-    local                   version="master"
+    local                   version="unstable"
     [ -f "matrix.json" ] && version=$(jq -r '.concourse .dind' < matrix.json)
 
     curl -sSL "https://raw.githubusercontent.com/encodeering/docker-ci/${version}/modules/pipeline/docker-self.yml" \

@@ -19,6 +19,8 @@ pipeline () {
                                           --var git.uri="${location}"                                               \
                                           --var git.branch="${branch}"                                              \
                                           --config -
+
+    fly -t "${target}" trigger-job -j "${name}-self/self" --watch
 }
 
 case "${1}" in

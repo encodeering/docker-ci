@@ -12,11 +12,11 @@ gitVersioning.apply {
     refs {
         considerTagsOnBranches = true
 
-        branch (".+") {
-            version = "\${describe.tag.version.major}.\${describe.tag.version.minor}.\${describe.tag.version.patch.next}-unstable"
-        }
         tag ("(?<version>[0-9.]+)") {
             version = "\${ref.version}"
+        }
+        branch (".+") {
+            version = "\${describe.tag.version.major}.\${describe.tag.version.minor}.\${describe.tag.version.patch.next}-unstable"
         }
     }
 

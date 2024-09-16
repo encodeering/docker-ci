@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
-source docker-dind
+echo "Mirror: ${DOCKER_MIRROR}"
+
+source docker-dind "" "${DOCKER_MIRROR}"
 
 start_docker
 

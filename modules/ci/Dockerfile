@@ -1,6 +1,6 @@
 # https://github.com/fhivemind/concourse-dind
 # https://github.com/meAmidos/dcind
-FROM       debian:bullseye-slim
+FROM       debian:bookworm-slim
 
 ARG        DEBIAN_FRONTEND=noninteractive
 
@@ -23,8 +23,8 @@ RUN        apt-get    update       \
  &&        rm -rf /root/.cache
 
 ARG        DOCKER_CHANNEL=stable
-ARG        DOCKER_VERSION=20.10.12
-ARG        DOCKER_BUILDX_VERSION=0.7.0
+ARG        DOCKER_VERSION=27.2.1
+ARG        DOCKER_BUILDX_VERSION=0.11.2
 
 RUN        curl -sSL "https://download.docker.com/linux/static/${DOCKER_CHANNEL}/x86_64/docker-${DOCKER_VERSION}.tgz" | tar zx \
  &&        mv /docker/* /bin/          \

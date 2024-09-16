@@ -72,7 +72,7 @@ docker-verify-config () {
 
 docker-pull () {
     local          image="$1"; shift
-
+                   image="`dashcase ${image} $([[ "${image}" =~ ^${REPOSITORY}/.* ]] && echo -n "${BRANCH##master}" || echo -n "")`"
     docker pull "${image}"
 
     for tag in "$@"

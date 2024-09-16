@@ -1,8 +1,0 @@
-apply from: 'gradle/script/version.gradle'
-
-subprojects {
-
-    group = 'com.encodeering'
-    version versioncode ()
-
-}

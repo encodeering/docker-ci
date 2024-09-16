@@ -27,17 +27,14 @@ ARG        DOCKER_VERSION=20.10.12
 ARG        DOCKER_BUILDX_VERSION=0.7.0
 
 RUN        curl -sSL "https://download.docker.com/linux/static/${DOCKER_CHANNEL}/x86_64/docker-${DOCKER_VERSION}.tgz" | tar zx \
- &&        mv /docker/* /bin/         \
- &&        chmod +x     /bin/docker*
-
-ARG        CI_VERSION=0.1.15
-
-RUN        mkdir -p /usr/local/lib/ci/ \
+ &&        mv /docker/* /bin/          \
+ &&        chmod +x     /bin/docker*   \
  &&        curl -sSL "https://raw.githubusercontent.com/meAmidos/dcind/6efeeaa/docker-lib.sh"          --output /usr/local/bin/docker-dind    \
- &&        curl -sSL "https://raw.githubusercontent.com/qemu/qemu/719fab3/scripts/qemu-binfmt-conf.sh" --output /usr/local/bin/binfmt-qemu.sh \
- &&        curl -sSL "https://github.com/encodeering/docker-ci/releases/download/${CI_VERSION}/ci-${CI_VERSION}.tar" --output /usr/local/lib/ci/docker.tar
+ &&        curl -sSL "https://raw.githubusercontent.com/qemu/qemu/719fab3/scripts/qemu-binfmt-conf.sh" --output /usr/local/bin/binfmt-qemu.sh
 
-COPY       bin/*.sh   /usr/local/bin/
-RUN        chmod +x   /usr/local/bin/*.sh
+COPY       bin/*.sh  /usr/local/bin/
+COPY       ci-*.tar  /usr/local/lib/ci/docker.tar
+
+RUN        chmod +x  /usr/local/bin/*.sh
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

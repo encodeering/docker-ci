@@ -1,0 +1,81 @@
+jobs:
+  - name: build
+    plan:
+      - in_parallel:
+        - get: code
+          trigger: true
+          params:
+            fetch_tags: true
+        - get: java
+      - task: build
+        image: java
+        config:
+          platform: linux
+          inputs:
+            - name: code
+          outputs:
+            - name: docker
+              path: code/context
+          run:
+            dir: code
+            path: sh
+            args:
+              - -cex
+              - |
+                apk --quiet --no-cache add git
+
+                git checkout ((git.branch))
+
+                ./gradlew dockerPrepare
+
+                mkdir -p                        context
+                cp -a modules/ci/build/docker/. context
+      - load_var: version
+        file: docker/version.txt
+      - task: image
+        privileged: true
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              repository: concourse/oci-build-task
+              registry_mirror:
+                host:     ((docker.mirror))
+                username: ((docker.username))
+                password: ((docker.password))
+          inputs:
+            - name: docker
+          outputs:
+            - name: image
+          params:
+            CONTEXT: docker
+          run:
+            path: build
+      - put: dind
+        params:
+          image: image/image.tar
+          version: ((.:version))
+
+resources:
+  - name: code
+    type: git
+    source:
+      uri:    ((git.uri))
+      branch: ((git.branch))
+    check_every: 10m
+  - name: java
+    type: registry-image
+    source:
+      repository: eclipse-temurin
+      tag: 17-alpine
+      registry_mirror:
+        host:     ((docker.mirror))
+        username: ((docker.username))
+        password: ((docker.password))
+  - name: dind
+    type: registry-image
+    source:
+      repository: encodeering/concourse-dind
+      username: ((docker.username))
+      password: ((docker.password))

@@ -26,3 +26,15 @@ docker {
     files (file ("static"), tasks.distTar)
     pull  (true)
 }
+
+tasks {
+    val version by register<Task> ("dockerVersion") {
+        group =    dockerPrepare.get ().group
+        dependsOn (dockerPrepare)
+        doLast {
+            dockerPrepare.get().outputs.files.singleFile.resolve ("version.txt").writeText ("$version")
+        }
+    }
+
+    dockerPrepare.configure { finalizedBy (version) }
+}

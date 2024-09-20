@@ -1,0 +1,34 @@
+jobs:
+- name: build
+  plan:
+  - get: code
+  - across:
+    - var: pipeline
+      values: ((pipelines))
+      max_in_flight: 2
+    do:
+    - put: fly
+      no_get: true
+      params:
+        options: |
+          trigger-job --job ((parent))/base:"((.:pipeline.base))",variant:"((.:pipeline.variant))",version:"((.:pipeline.version))"/build --watch
+
+resources:
+- name: code
+  type: git
+  source:
+    uri:    ((git.uri))
+    branch: ((git.branch))
+  check_every: 10m
+- name: fly
+  type: fly
+  source:
+    username: ((concourse.username))
+    password: ((concourse.password))
+
+resource_types:
+- name: fly
+  type: registry-image
+  source:
+    repository: elpaasoci/concourse-fly-resource
+    tag: 2.0.2-orange-20240314

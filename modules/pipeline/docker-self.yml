@@ -23,7 +23,8 @@ jobs:
         - -cx
         - |
           set -euo pipefail
-          wget https://raw.githubusercontent.com/encodeering/docker-ci/((.:matrix.concourse.dind))/modules/pipeline/docker.yml -O code/matrix.yml
+          wget --no-cache https://raw.githubusercontent.com/encodeering/docker-ci/((.:matrix.concourse.dind))/modules/pipeline/docker.yml      -O code/matrix.yml
+          wget --no-cache https://raw.githubusercontent.com/encodeering/docker-ci/((.:matrix.concourse.dind))/modules/pipeline/docker-hook.yml -O code/matrix-hook.yml
   - across:
     - var: pipeline
       values: ((.:matrix.pipelines))
@@ -42,6 +43,14 @@ jobs:
         base:       ((.:pipeline.base))
         variant:    ((.:pipeline.variant))
         version:    ((.:pipeline.version))
+  - set_pipeline:   ((pipeline))-hook
+    file: code/matrix-hook.yml
+    vars:
+      git:
+        uri:        ((git.uri))
+        branch:     ((git.branch))
+      parent:       ((pipeline))
+      pipelines:    ((.:matrix.pipelines))
 
 resources:
 - name: base

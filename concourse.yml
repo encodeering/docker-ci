@@ -3,9 +3,6 @@ jobs:
     plan:
       - in_parallel:
         - get: code
-          trigger: true
-          params:
-            fetch_tags: true
         - get: java
       - task: build
         image: java
@@ -25,6 +22,7 @@ jobs:
                 apk --quiet --no-cache add git
 
                 git checkout ((git.branch))
+                git fetch --tags
 
                 ./gradlew dockerPrepare
 

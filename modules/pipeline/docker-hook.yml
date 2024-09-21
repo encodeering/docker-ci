@@ -1,7 +1,6 @@
 jobs:
 - name: build
   plan:
-  - get: code
   - across:
     - var: pipeline
       values: ((pipelines))
@@ -11,15 +10,14 @@ jobs:
       no_get: true
       params:
         options: |
+          check-resource --resource ((parent))/base:"((.:pipeline.base))",variant:"((.:pipeline.variant))",version:"((.:pipeline.version))"/code
+    - put: fly
+      no_get: true
+      params:
+        options: |
           trigger-job --job ((parent))/base:"((.:pipeline.base))",variant:"((.:pipeline.variant))",version:"((.:pipeline.version))"/build --watch
 
 resources:
-- name: code
-  type: git
-  source:
-    uri:    ((git.uri))
-    branch: ((git.branch))
-  check_every: 10m
 - name: fly
   type: fly
   source:

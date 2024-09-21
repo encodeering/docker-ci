@@ -10,4 +10,5 @@ fly -t "${target}" set-pipeline  \
     --pipeline="docker-ci"       \
     --config concourse.yml
 
+fly -t "${target}" check-resource -r "docker-ci/code"
 fly -t "${target}" trigger-job -j "docker-ci/build" --watch

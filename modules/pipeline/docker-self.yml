@@ -1,6 +1,11 @@
 jobs:
 - name: self
   plan:
+  - put: fly
+    no_get: true
+    params:
+      options: |
+        check-resource --resource ((pipeline))-self/code
   - in_parallel:
     - get: base
     - get: code
@@ -46,9 +51,6 @@ jobs:
   - set_pipeline:   ((pipeline))-hook
     file: code/matrix-hook.yml
     vars:
-      git:
-        uri:        ((git.uri))
-        branch:     ((git.branch))
       parent:       ((pipeline))
       pipelines:    ((.:matrix.pipelines))
 
@@ -64,6 +66,19 @@ resources:
       password: ((docker.password))
 - name: code
   type: git
+  check_every: never
   source:
     uri:    ((git.uri))
     branch: ((git.branch))
+- name: fly
+  type: fly
+  source:
+    username: ((concourse.username))
+    password: ((concourse.password))
+
+resource_types:
+- name: fly
+  type: registry-image
+  source:
+    repository: elpaasoci/concourse-fly-resource
+    tag: 2.0.2-orange-20240314

@@ -42,6 +42,7 @@ jobs:
 resources:
 - name: code
   type: git
+  check_every: never
   source:
     uri:    ((git.uri))
     branch: ((git.branch))

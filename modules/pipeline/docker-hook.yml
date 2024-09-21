@@ -10,6 +10,11 @@ jobs:
       no_get: true
       params:
         options: |
+          check-resource --resource ((parent))/base:"((.:pipeline.base))",variant:"((.:pipeline.variant))",version:"((.:pipeline.version))"/code
+    - put: fly
+      no_get: true
+      params:
+        options: |
           trigger-job --job ((parent))/base:"((.:pipeline.base))",variant:"((.:pipeline.variant))",version:"((.:pipeline.version))"/build --watch
 
 resources:

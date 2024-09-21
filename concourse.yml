@@ -60,10 +60,10 @@ jobs:
 resources:
   - name: code
     type: git
+    check_every: never
     source:
       uri:    ((git.uri))
       branch: ((git.branch))
-    check_every: 10m
   - name: java
     type: registry-image
     source:

@@ -37,4 +37,6 @@ COPY       ci-*.tar  /usr/local/lib/ci/docker.tar
 
 RUN        chmod +x  /usr/local/bin/*.sh
 
+ENV        SKIP_PRIVILEGED=true
+
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

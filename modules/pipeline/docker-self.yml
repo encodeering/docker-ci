@@ -28,8 +28,8 @@ jobs:
         - -cx
         - |
           set -euo pipefail
-          wget --no-cache https://raw.githubusercontent.com/encodeering/docker-ci/((.:matrix.concourse.dind))/modules/pipeline/docker.yml      -O code/matrix.yml
-          wget --no-cache https://raw.githubusercontent.com/encodeering/docker-ci/((.:matrix.concourse.dind))/modules/pipeline/docker-hook.yml -O code/matrix-hook.yml
+          wget --no-cache https://raw.githubusercontent.com/encodeering/docker-ci/unstable/modules/pipeline/docker.yml      -O code/matrix.yml
+          wget --no-cache https://raw.githubusercontent.com/encodeering/docker-ci/unstable/modules/pipeline/docker-hook.yml -O code/matrix-hook.yml
   - across:
     - var: pipeline
       values: ((.:matrix.pipelines))
